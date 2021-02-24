@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import GlobalStyle from './GlobalStyles';
+import Tag from './Tag'
 
 export default function Form({ submitFunction }) {
 
@@ -11,11 +12,13 @@ export default function Form({ submitFunction }) {
         currency: '',
         size: '',
         support: '',
-        tags: '',
+        tags: [],
         onSale: false
     }
 
     const [product, setProduct] = useState(initialProduct)
+
+    console.log(product)
 
     const eventHandler = (event) => {
         const field = event.target; //source of the event
@@ -28,11 +31,42 @@ export default function Form({ submitFunction }) {
         })
     }
 
+    const validProductName = (name) => name.length >= 2;
+    const validEmailAddress = (mail) => mail.includes('@')
+    const validPrice = (price) => {
+        if(price.includes(',')){
+            const[_,decimals] = price.split(',')
+            if (decimals.length === 2)
+            return true
+        }
+        else if (price) {return true}
+        else {return false}
+    }
+
+
     function submitForm(event) {
         event.preventDefault()
+        if (validProductName(product.name && validEmailAddress && validPrice(product.price))){
         submitFunction(product)
         setProduct(initialProduct)
+        }
+        else {alert('form wrong')}
     }
+
+    const setTags = (tag) => {
+        setProduct({
+            ...product, tags: [...product.tags, tag]
+        })
+    }
+
+    const deleteTag = (tagToDelete) => {
+        const allRemainingTags = product.tags.filter((tag) => (tag !== tagToDelete))
+        setProduct({
+            ...product,
+            tags: [allRemainingTags]
+        })
+    }
+
 
     return (
         <form onSubmit={submitForm}>
@@ -44,7 +78,7 @@ export default function Form({ submitFunction }) {
             </section>
             <PriceBox>
                 <label> Price
-          <input type="number" name="price" onChange={eventHandler} value={product.price} />
+          <input type="text" name="price" onChange={eventHandler} value={product.price} />
                 </label>
                 <label> Currency
           <input type="text" name="currency" onChange={eventHandler} value={product.currency} />
@@ -67,11 +101,9 @@ export default function Form({ submitFunction }) {
           <input type="text" name="support" onChange={eventHandler} value={product.support} />
                 </label>
             </section>
-            <section>
-                <label>Product Tags
-          <input type="text" name="tags" onChange={eventHandler} value={product.tags} />
-                </label>
-            </section>
+            <Tag createTag={setTags} tags={product.tags} onDeleteTag={deleteTag}/>
+
+
             <section>
                 <input type="checkbox" name="onSale" onChange={eventHandler} value={product.onSale} checked={product.onSale} />On Sale
       </section>

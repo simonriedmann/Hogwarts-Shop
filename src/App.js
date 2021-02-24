@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import GlobalStyle from './GlobalStyles';
 import { v4 as uuidv4 } from 'uuid'
 import Card from './Card'
+import Tag from './Tag'
 
 import Form from './Form'
 
