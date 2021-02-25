@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import styled from 'styled-components';
 
 
 export default function Tag({ createTag, tags, onDeleteTag }) {
@@ -17,13 +18,21 @@ export default function Tag({ createTag, tags, onDeleteTag }) {
 
     return (    
         <section>
-
-            <label>Product Tags
-            <input type="text" name="tags" onChange={handleChange} onKeyDown={onKeyDown} value={value} />
-            </label>
+            <label>Product Tags</label>
+            <Wrapper>
             {tags.map((tag, index) => (<span key={index}>{tag}<i onClick={() =>
             onDeleteTag(tag)}>&times;</i></span>))}
+            <input type="text" name="tags" onChange={handleChange} onKeyDown={onKeyDown} value={value} />
+            
+            </Wrapper>
         </section>
     )
 
 }
+
+const Wrapper = styled.section`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 20%;
+  border: solid 1px black;`

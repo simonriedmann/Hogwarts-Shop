@@ -31,16 +31,20 @@ export default function Form({ submitFunction }) {
         })
     }
 
-    const validProductName = (name) => name.length >= 2;
-    const validEmailAddress = (mail) => mail.includes('@')
-    const validPrice = (price) => {
-        if(price.includes(',')){
-            const[_,decimals] = price.split(',')
+    function validProductName(name) {
+        return name.length >= 2;
+    }
+    function validEmailAddress(mail) {
+        return mail.includes('@');
+    }
+    function validPrice(price) {
+        if (price.includes(',')) {
+            const [_, decimals] = price.split(',');
             if (decimals.length === 2)
-            return true
+                return true;
         }
-        else if (price) {return true}
-        else {return false}
+        else if (price) { return true; }
+        else { return false; }
     }
 
 
